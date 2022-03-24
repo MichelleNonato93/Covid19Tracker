@@ -24,20 +24,18 @@ getCovidData(from: url)
 private func getCovidData(from url: String) {
     let task = URLSession.shared.dataTask(with: URL(string: url)!, completionHandler: {data, response, error in
 
-       guard let error = error else {
-        print("ERROR: \(error)")
-        return
-       }
        
        guard let data = data else {
          return
        }
-       
-       print("RESPONSE: \(response) ")
+        
+        print("DATA: \(data)")
+        print("RESPONSE: \(response) ")
        
        do {
          let json = try JSONDecoder().decode(JsonAPI.self, from: data)
-           print(json)
+           print("json \(json)")
+            
        } catch {
                print("Error \(error.localizedDescription)")
            }
