@@ -1,4 +1,3 @@
-//
 //  WorldViewController.swift
 //  CVD19Tracker
 //
@@ -22,34 +21,33 @@ class WorldViewController: UIViewController {
     
     private func getCovidData(from url: String) {
         let task = URLSession.shared.dataTask(with: URL(string: url)!, completionHandler: {data, response, error in
-            
-            guard let APIData = data, error == nil else {
-                print("ERROR")
-                return
-            }
-            
-            var results: JsonAPI?
-            
-            do {
-                
-                let decoder = JSONDecoder()
-                results = try decoder.decode(JsonAPI.self, from: APIData)
-            }
-            catch {
-                print("Error \(error.localizedDescription)")
-            }
-            
-            guard let json = results else {
-                return
-            }
-            
-            print(json)
-        })
-        
-        task.resume()
-        
-    }
-}
+
+           guard let error = error else {
+            print("ERROR: \(error)")
+            return
+           }
+           
+           guard let data = data else {
+             return
+           }
+           
+           print("RESPONSE: \(response) ")
+           
+           do {
+             let json = try JSONDecoder().decode(JsonAPI.self, from: data)
+               print(json.results)
+                    
+                    
+           } catch {
+                   print("Error \(error.localizedDescription)")
+               }
+               
+           })
+           
+           task.resume()
+           
+       }
+   }
 
 struct JsonAPI: Decodable {
     let results: [JsonResult]
